@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    
+    <form method="post" action="/">
+        <label for="url">Enter an https:// URL:</label>
+        <input type="url" name="url" id="url" placeholder="https://www.example.com" required>
+        <button type="submit">Submit</button>
+    </form>
+    
+    {% if new_url %}
+        <p>Original URL: <a href="{{ old_url }}" target="_blank">{{ old_url }}</a></p>
+        <p>Shortened URL: <a href="{{ new_url }}" target="_blank">{{ new_url }}</a></p>
+    {% endif %}
+</body>
+</html>
