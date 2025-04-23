@@ -1,0 +1,70 @@
+:root {
+    --primary: #3a86ff;
+    --error: #ff006e;
+}
+
+.calculator {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    box-shadow:  5px 5px 15px #d9d9d9,
+                -5px -5px 15px #ffffff;
+}
+
+.display {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 24px;
+    text-align: right;
+    border: none;
+    border-radius: 10px;
+    background: #f0f0f0;
+    box-shadow: inset 5px 5px 10px #d9d9d9,
+                inset -5px -5px 10px #ffffff;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+button {
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 18px;
+    background: #f0f0f0;
+    box-shadow:  5px 5px 10px #d9d9d9,
+                -5px -5px 10px #ffffff;
+    transition: all 0.2s;
+}
+
+button:active {
+    box-shadow: inset 5px 5px 10px #d9d9d9,
+                inset -5px -5px 10px #ffffff;
+}
+
+.number {
+    color: #333;
+}
+
+.operator {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.error {
+    color: var(--error);
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
