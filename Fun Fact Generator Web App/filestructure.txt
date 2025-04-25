@@ -1,0 +1,5 @@
+Fun Fact Generator Web App/
+│
+├── templates/                     
+│   ├── index.html              
+├── app.py       
