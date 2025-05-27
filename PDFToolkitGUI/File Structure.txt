@@ -1,0 +1,18 @@
+PDFToolkitGUI/
+├── app/
+│   ├── __init__.py
+│   ├── merger.py              # PDF merging
+│   ├── splitter.py            # PDF splitting
+│   ├── compressor.py          # Compress PDF size
+│   ├── rotator.py             # Rotate pages
+│   ├── text_extractor.py      # Extract text
+│   ├── encryptor.py           # Encrypt/Decrypt logic
+│   ├── gui.py                 # GUI logic with tool selection
+│   └── utils.py               # Shared utilities
+├── assets/
+│   └── icon.ico
+├── output/
+│   └── [outputs saved here]
+├── main.py
+├── requirements.txt
+└── README.md

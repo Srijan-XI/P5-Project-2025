@@ -1,0 +1,19 @@
+MOS-Sim/
+├── include/                     # Header files
+│   └── process_scheduler.h
+│
+├── src/                         # Source code
+│   ├── main.cpp
+│   └── process_scheduler.cpp
+│
+├── build/                       # Compiled binary and object files
+│   └── (generated during compilation)
+│
+├── docs/                        # Documentation and reports
+│   ├── README.md
+│   ├── Project_Report.pdf
+│   └── Presentation.pptx
+│
+├── test/                        # Test cases and inputs
+│   └── test_cases.txt
+

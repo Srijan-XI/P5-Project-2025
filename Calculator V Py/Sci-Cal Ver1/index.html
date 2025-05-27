@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scientific Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" class="display" readonly />
+    <div class="buttons">
+      <!-- Row 1 -->
+      <button onclick="func('sin')">sin</button>
+      <button onclick="func('cos')">cos</button>
+      <button onclick="func('tan')">tan</button>
+      <button onclick="insert('()')">()</button>
+      <button onclick="toggleInverse()">inv</button>
+      <!-- Row 2 -->
+      <button onclick="insert('a')">a</button>
+      <button onclick="insert('b')">b</button>
+      <button onclick="insert('c')">c</button>
+      <button onclick="insert('d')">d</button>
+      <button onclick="factorial()">x!</button>
+      <!-- Row 3 -->
+      <button onclick="square()">x²</button>
+      <button onclick="clearDisplay()">AC</button>
+      <button onclick="del()">DEL</button>
+      <button onclick="insert('%')">%</button>
+      <button onclick="insert('/')">/</button>
+      <!-- Row 4 -->
+      <button onclick="cube()">x³</button>
+      <button onclick="insert('7')">7</button>
+      <button onclick="insert('8')">8</button>
+      <button onclick="insert('9')">9</button>
+      <button onclick="insert('*')">*</button>
+      <!-- Row 5 -->
+      <button onclick="sqrt()">√</button>
+      <button onclick="insert('4')">4</button>
+      <button onclick="insert('5')">5</button>
+      <button onclick="insert('6')">6</button>
+      <button onclick="insert('-')">-</button>
+      <!-- Row 6 -->
+      <button onclick="insert('π')">π</button>
+      <button onclick="insert('1')">1</button>
+      <button onclick="insert('2')">2</button>
+      <button onclick="insert('3')">3</button>
+      <button onclick="insert('+')">+</button>
+      <!-- Row 7 -->
+      <button onclick="insert('e')">e</button>
+      <button onclick="insert('00')">00</button>
+      <button onclick="insert('0')">0</button>
+      <button onclick="insert('.')">.</button>
+      <button onclick="calculate()">=</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

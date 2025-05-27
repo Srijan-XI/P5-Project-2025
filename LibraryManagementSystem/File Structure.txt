@@ -1,0 +1,10 @@
+LibraryManagementSystem/
+├── include/
+│   ├── Book.hpp
+│   └── Library.hpp
+├── src/
+│   ├── Book.cpp
+│   ├── Library.cpp
+│   └── main.cpp
+├── data/
+│   └── library.dat   // created automatically
