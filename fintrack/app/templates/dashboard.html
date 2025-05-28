@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container">
+    <h1>Dashboard</h1>
+    <form action="{{ url_for('main.add') }}" method="POST" class="transaction-form" aria-label="Add new transaction">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input id="title" name="title" type="text" placeholder="Enter title" required autocomplete="off" />
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount (₹)</label>
+            <input id="amount" name="amount" type="number" step="0.01" min="0" placeholder="Enter amount" required />
+        </div>
+        <div class="form-group">
+            <label for="category">Category</label>
+            <input id="category" name="category" type="text" placeholder="Enter category" required autocomplete="off" />
+        </div>
+        <div class="form-group">
+            <label for="type">Transaction Type</label>
+            <select id="type" name="type" required>
+                <option value="" disabled selected>Select type</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-submit">Add Transaction</button>
+    </form>
+
+    <hr />
+
+    <section aria-live="polite" aria-label="Transaction list">
+        {% if transactions %}
+            <ul class="transaction-list">
+                {% for tx in transactions %}
+                    <li>
+                        <time datetime="{{ tx.date.strftime('%Y-%m-%d') }}">{{ tx.date.strftime('%Y-%m-%d') }}</time> &mdash;
+                        <strong>{{ tx.title }}</strong> —
+                        <span>₹{{ "%.2f"|format(tx.amount) }}</span> —
+                        <em>{{ tx.type|capitalize }}</em>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No transactions recorded yet.</p>
+        {% endif %}
+    </section>
+</section>
+{% endblock %}
