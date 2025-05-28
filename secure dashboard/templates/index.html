@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Secure Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Secure Multi-Tool Dashboard</h2>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="fileInput">Select File to Upload & Analyze:</label>
+        <input type="file" id="fileInput" name="file" required>
+        <button type="submit">Upload & Analyze</button>
+    </form>
+
+    <hr>
+
+    <form action="/encrypt" method="POST">
+        <label for="textInput">Enter Text to Encrypt:</label>
+        <textarea id="textInput" name="text" placeholder="Type your text here..." required></textarea>
+        <button type="submit">Encrypt</button>
+    </form>
+
+    <hr>
+
+    <form action="/sysinfo" method="GET">
+        <button type="submit">View System Info</button>
+    </form>
+
+    <hr>
+
+    <h3>Output:</h3>
+    <pre id="output">{{ output }}</pre>
+</div>
+</body>
+</html>
