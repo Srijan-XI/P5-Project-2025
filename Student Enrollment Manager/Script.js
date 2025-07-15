@@ -7,8 +7,8 @@ form.addEventListener('submit', function (e) {
   const name = document.getElementById('studentName').value.trim();
   const id = document.getElementById('studentID').value.trim();
   const course = document.getElementById('course').value.trim();
-  const dob = document.getElementById('dob').value;
-  const enrollDate = document.getElementById('enrollDate').value;
+  const dob = document.getElementById('dob').value.trim();
+  const enrollDate = document.getElementById('enrollDate').value.trim();
   const address = document.getElementById('address').value.trim();
   const completed = document.getElementById('completed').value;
 
@@ -17,9 +17,9 @@ form.addEventListener('submit', function (e) {
     return;
   }
 
-  // Validate date format (DD/MM/YYYY)
-  if (!isValidDate(dob) || !isValidDate(enrollDate)) {
-    alert('Please enter valid dates in the format DD/MM/YYYY.');
+  // Validate proper DD/MM/YYYY format and logical date correctness
+  if (!isValidFullDate(dob) || !isValidFullDate(enrollDate)) {
+    alert('Please enter valid dates in DD/MM/YYYY format (e.g., 21/07/2023).');
     return;
   }
 
@@ -28,11 +28,32 @@ form.addEventListener('submit', function (e) {
   alert('Student successfully enrolled!');
 });
 
-function isValidDate(dateString) {
-  const regex = /^\d{2}\/\d{2}\/\d{4}$/;
-  return regex.test(dateString);
+// Regex & Logical Validator
+function isValidFullDate(dateStr) {
+  const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+  const match = dateStr.match(regex);
+  if (!match) return false;
+
+  const day = parseInt(match[1], 10);
+  const month = parseInt(match[2], 10);
+  const year = parseInt(match[3], 10);
+
+  // Check valid month and day range
+  if (month < 1 || month > 12 || day < 1 || day > 31) return false;
+
+  // Now create a Date object using zero-based month
+  const date = new Date(year, month - 1, day);
+
+  // Validate whether the Date object matches the input (catches overflows like 31/02/2023)
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
 }
 
+
+// Create and display a student card
 function createStudentCard(name, id, course, dob, enrollDate, address, completed) {
   const card = document.createElement('div');
   card.className = 'student-card';
@@ -68,6 +89,7 @@ function createStudentCard(name, id, course, dob, enrollDate, address, completed
   studentList.appendChild(card);
 }
 
+// Button generator
 function createButton(text, bgColor, onClick) {
   const button = document.createElement('button');
   button.className = 'remove-btn';
@@ -77,6 +99,7 @@ function createButton(text, bgColor, onClick) {
   return button;
 }
 
+// Edit Mode Functionality
 function enterEditMode(card, name, id, course, dob, enrollDate, address, completed) {
   card.innerHTML = '';
 
@@ -89,13 +112,27 @@ function enterEditMode(card, name, id, course, dob, enrollDate, address, complet
   const completedSelect = createSelect(completed);
 
   const saveBtn = createButton('Save', '#5cb85c', () => {
+    if (
+      !nameInput.value.trim() || !idInput.value.trim() ||
+      !courseInput.value.trim() || !dobInput.value.trim() ||
+      !enrollInput.value.trim() || !addrInput.value.trim() || !completedSelect.value
+    ) {
+      alert('All fields are required.');
+      return;
+    }
+
+    if (!isValidFullDate(dobInput.value.trim()) || !isValidFullDate(enrollInput.value.trim())) {
+      alert('Enter valid dates in DD/MM/YYYY format.');
+      return;
+    }
+
     createStudentCard(
-      nameInput.value,
-      idInput.value,
-      courseInput.value,
-      dobInput.value,
-      enrollInput.value,
-      addrInput.value,
+      nameInput.value.trim(),
+      idInput.value.trim(),
+      courseInput.value.trim(),
+      dobInput.value.trim(),
+      enrollInput.value.trim(),
+      addrInput.value.trim(),
       completedSelect.value
     );
     studentList.removeChild(card);
@@ -120,6 +157,7 @@ function enterEditMode(card, name, id, course, dob, enrollDate, address, complet
   );
 }
 
+// Helper Input Creator
 function createInput(value, type = 'text') {
   const input = document.createElement('input');
   input.type = type;
@@ -128,6 +166,7 @@ function createInput(value, type = 'text') {
   return input;
 }
 
+// Helper Select Creator
 function createSelect(selectedValue) {
   const select = document.createElement('select');
   select.className = 'edit-input';
