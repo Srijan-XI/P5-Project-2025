@@ -1,6 +1,7 @@
 const startBoard = (game, options = { playAgainst: 'human', aiColor: 'black', aiLevel: 'dumb' }) => {
 
     const aiPlayer = options.playAgainst === 'ai' ? ai(options.aiColor) : null;
+    let gameState = 'white_turn';
 
     const board   = document.getElementById('board');
     const squares = board.querySelectorAll('.square');
@@ -213,6 +214,9 @@ const pieces = [
 ];
 const game = new Game(pieces, 'white');
 
+const showColorSelect = () => document.querySelector('.select-color-container').classList.add('show');
+const hideColorSelect = () => document.querySelector('.select-color-container').classList.remove('show');
+
 const startNewGame = () => {
     document.querySelectorAll('.scene').forEach( scene => scene.classList.remove('show') );
 
@@ -223,6 +227,3 @@ const startNewGame = () => {
     
     startBoard(game, {playAgainst, aiColor, aiLevel});
 }
-
-const showColorSelect = () => document.querySelector('.select-color-container').classList.add('show');
-const hideColorSelect = () => document.querySelector('.select-color-container').classList.remove('show');

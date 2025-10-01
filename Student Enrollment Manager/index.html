@@ -4,11 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Student Enrollment Manager</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="Style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Student Enrollment Manager</h1>
+    <header class="app-header">
+      <h1>Student Enrollment Manager</h1>
+      <p class="subtitle">Web Frontend with C++ Backend Integration</p>
+      
+      <div class="data-controls">
+        <div id="importExportButtons"></div>
+        <div class="stats" id="studentStats">
+          <span>Total Students: <strong id="studentCount">0</strong></span>
+          <span>|</span>
+          <span>Completed: <strong id="completedCount">0</strong></span>
+        </div>
+      </div>
+    </header>
 
     <form id="enrollmentForm">
       <label for="studentName">Student Name</label>
@@ -44,6 +56,8 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="validation-utils.js"></script>
+  <script src="api-bridge.js"></script>
+  <script src="Script.js"></script>
 </body>
 </html>

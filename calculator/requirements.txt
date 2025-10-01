@@ -1,0 +1,13 @@
+# Professional Calculator - Python Dependencies
+
+# Core web framework
+Flask==3.0.0
+
+# Optional: For enhanced API testing
+requests==2.31.0
+
+# Optional: For production deployment
+gunicorn==21.2.0
+
+# Optional: For development tools
+pytest==7.4.3

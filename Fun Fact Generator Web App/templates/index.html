@@ -3,72 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/index.css">
   <title>Fun Fact Generator</title>
-  <style>
-    body {
-      background: linear-gradient(to right, #ffecd2, #fcb69f);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-      font-size: 3rem;
-      color: #333;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-      animation: slideDown 1s ease forwards;
-    }
-
-    @keyframes slideDown {
-      from { transform: translateY(-50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    #fact {
-      font-size: 1.5rem;
-      margin: 20px 0;
-      color: #444;
-      max-width: 600px;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      opacity: 1; /* set visible initially */
-      transition: opacity 0.5s ease;
-    }
-
-    .hidden {
-      opacity: 0;
-    }
-
-    button {
-      background-color: #ff7e5f;
-      color: white;
-      padding: 12px 25px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #eb5e28;
-      transform: scale(1.1);
-    }
-
-    footer {
-      margin-top: 30px;
-      font-size: 0.9rem;
-      color: #333;
-    }
-  </style>
 </head>
 
 <body>
@@ -80,26 +16,6 @@
     Created with ❤️ by Srijan
   </footer>
 
-  <script>
-    function getFact() {
-      const factElement = document.getElementById('fact');
-
-      // Fade out first
-      factElement.classList.add('hidden');
-
-      fetch('/random-fact')
-        .then(response => response.json())
-        .then(data => {
-          setTimeout(() => {
-            factElement.innerText = data.fact;
-            factElement.classList.remove('hidden'); // Fade back in
-          }, 300); // match with transition timing
-        })
-        .catch(error => {
-          factElement.innerText = "Oops! Could not fetch a fact.";
-          factElement.classList.remove('hidden');
-        });
-    }
-  </script>
+  <script src="/static/app.js"></script>
 </body>
 </html>

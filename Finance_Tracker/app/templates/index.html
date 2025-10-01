@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Finance Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="hero-section text-center mb-5">
+                <h1 class="display-4 text-primary">
+                    <i class="fas fa-money-bill-wave me-3"></i>
+                    Finance Tracker
+                </h1>
+                <p class="lead">Take control of your finances with our comprehensive expense and income tracking system.</p>
+                
+                {% if not current_user.is_authenticated %}
+                <div class="mt-4">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-user-plus me-2"></i>Get Started
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </a>
+                </div>
+                {% else %}
+                <div class="mt-4">
+                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if not current_user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Track Expenses</h5>
+                    <p class="card-text">Monitor your spending patterns and categorize expenses to better understand where your money goes.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-export fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Generate Reports</h5>
+                    <p class="card-text">Export detailed financial reports in PDF and Excel formats for analysis and record-keeping.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-tags fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Categorize Transactions</h5>
+                    <p class="card-text">Organize your income and expenses with customizable categories for better financial insights.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

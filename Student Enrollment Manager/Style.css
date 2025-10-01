@@ -23,12 +23,58 @@ body {
   border: 2px solid #1e90ff;
 }
 
-/* Header */
-h1 {
+/* Enhanced Header */
+.app-header {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1e90ff, #4169e1);
+  color: white;
+}
+
+.app-header h1 {
+  margin: 0 0 10px 0;
   font-size: 28px;
-  color: #1e90ff;
+  color: white;
+}
+
+.subtitle {
+  margin: 0 0 20px 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.data-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.stats {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.stats span {
+  margin: 0 8px;
+}
+
+#importExportButtons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.import-btn:hover,
+.export-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
 }
 
 /* Form Styles */

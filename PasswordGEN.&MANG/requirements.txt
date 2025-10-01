@@ -1,0 +1,33 @@
+# Unified Password Manager - Requirements
+
+## Required Dependencies
+
+### Core Requirements (Essential)
+cryptography>=3.4.8
+
+### Optional Dependencies (Enhanced Features)
+ttkbootstrap>=1.10.1
+
+## Installation Commands
+
+### Install Core Requirements
+pip install cryptography
+
+### Install All Dependencies (Recommended)
+pip install cryptography ttkbootstrap
+
+### Alternative: Install from requirements.txt
+pip install -r requirements.txt
+
+## Python Version Requirements
+Python 3.6 or higher
+
+## Platform Support
+- Windows
+- macOS
+- Linux
+
+## Notes
+- `cryptography` is required for password encryption/decryption
+- `ttkbootstrap` is optional but provides modern GUI themes
+- Standard library modules used: tkinter, json, os, sys, argparse, hashlib, base64, random, string, getpass

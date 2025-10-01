@@ -229,3 +229,11 @@ input[type="radio"]:checked + label {
 	padding: 30px 60px;
 	font-size: 25px;
 }
+
+.select-color-container {
+	display: none;
+}
+
+.select-color-container.show {
+	display: block !important;
+}
