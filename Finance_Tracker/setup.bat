@@ -48,10 +48,12 @@ echo ================================
 echo    Setup Complete!
 echo ================================
 echo.
-echo To start the application:
-echo 1. Run: venv\Scripts\activate
-echo 2. Run: python run.py
-echo 3. Open: http://localhost:5000
+echo Starting Finance Tracker application...
+echo.
+echo The application will be available at:
+echo http://localhost:5000
+echo.
+echo Press Ctrl+C to stop the application
 echo.
 
-pause
+python run.py
