@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Multi-Tool Dashboard</title>
+    <!-- Load Inter font and Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Load Lucide icons for clean UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Load D3.js for Charting -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Sidebar Navigation (Fixed) -->
+        <aside id="sidebar" class="w-64 bg-gray-800 flex flex-col transition-transform duration-300 ease-in-out
+                                  sm:translate-x-0 sm:static fixed z-30 h-full p-4 transform -translate-x-full">
+
+            <!-- App Header/Logo -->
+            <div class="flex items-center space-x-2 p-2 mb-6 border-b border-gray-700">
+                <i data-lucide="shield-check" class="text-emerald-400 w-6 h-6"></i>
+                <h1 class="text-xl font-bold text-gray-100">Secure Dashboard</h1>
+                <!-- Close button for mobile -->
+                <button id="close-sidebar" class="sm:hidden text-gray-400 ml-auto hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="space-y-2 flex-grow">
+                <a href="#" data-tool="crypto" class="nav-link flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 transition duration-150 active-link">
+                    <i data-lucide="key" class="w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Crypto Utility</span>
+                </a>
+                <a href="#" data-tool="password" class="nav-link flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 transition duration-150">
+                    <i data-lucide="lock" class="w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Password Generator</span>
+                </a>
+                 <a href="#" data-tool="analytics" class="nav-link flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 transition duration-150">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Data Analytics</span>
+                </a>
+                <a href="#" data-tool="logs" class="nav-link flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 transition duration-150">
+                    <i data-lucide="activity" class="w-5 h-5 mr-3"></i>
+                    <span class="font-medium">System Status Log</span>
+                </a>
+                <!-- Divider -->
+                <div class="border-t border-gray-700 pt-4 mt-4"></div>
+                <a href="#" data-tool="settings" class="flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-700 transition duration-150">
+                    <i data-lucide="settings" class="w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Settings</span>
+                </a>
+            </nav>
+
+            <!-- User/Footer Section -->
+            <div class="mt-auto pt-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center text-lg font-bold">U</div>
+                    <div>
+                        <p class="text-sm font-semibold">User Access</p>
+                        <p class="text-xs text-gray-400">Security Level 5</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8">
+            
+            <!-- Mobile Header/Toggle -->
+            <header class="sm:hidden flex justify-between items-center py-2 border-b border-gray-800">
+                <h2 class="text-xl font-bold text-gray-100">Dashboard</h2>
+                <button id="open-sidebar" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-100">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </header>
+            
+            <!-- TOOL: Crypto Utility (Active by Default) -->
+            <section id="crypto-content" class="tool-content active">
+                <h2 class="text-3xl font-semibold mb-6 text-emerald-400 flex items-center space-x-3">
+                    <i data-lucide="key" class="w-7 h-7"></i>
+                    <span>Cryptographic Utility</span>
+                </h2>
+                <div class="bg-gray-800 p-6 rounded-xl shadow-2xl border border-gray-700 space-y-6">
+                    
+                    <!-- File Upload Section (New Feature) -->
+                    <div class="border-b border-gray-700 pb-4 mb-4 space-y-4">
+                        <h3 class="text-xl font-semibold text-gray-200 flex items-center">
+                            <i data-lucide="upload" class="w-5 h-5 mr-2 text-emerald-400"></i> File Processing (SHA-256)
+                        </h3>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <input type="file" id="file-input" class="block w-full text-sm text-gray-400
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-lg file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-gray-700 file:text-emerald-400
+                                hover:file:bg-gray-600
+                            "/>
+                            <button id="analyze-file-btn" class="py-3 px-6 bg-emerald-700 text-white font-semibold rounded-lg hover:bg-emerald-800 transition duration-200 flex-shrink-0">
+                                Analyze File
+                            </button>
+                        </div>
+                        <p id="file-status" class="text-sm text-gray-400"></p>
+                    </div>
+
+                    <!-- Mode and Key Selection -->
+                    <h3 class="text-xl font-semibold text-gray-200">Text Encryption/Hashing</h3>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <label for="crypto-mode" class="block text-sm font-medium text-gray-300 mb-2">Operation Mode</label>
+                            <select id="crypto-mode" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-emerald-500 focus:border-emerald-500 text-gray-100">
+                                <option>Encrypt (AES-256)</option>
+                                <option>Decrypt (AES-256)</option>
+                                <option>Hash (SHA-256)</option>
+                                <option>Sign (RSA)</option>
+                            </select>
+                        </div>
+                        <div class="flex-1">
+                            <label for="encryption-key" class="block text-sm font-medium text-gray-300 mb-2">Encryption Key (Optional)</label>
+                            <input type="text" id="encryption-key" placeholder="Enter secure key..." class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-emerald-500 focus:border-emerald-500 text-gray-100 placeholder-gray-400">
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div>
+                        <label for="input-data" class="block text-sm font-medium text-gray-300 mb-2">Input Data (Plain Text or Cipher Text)</label>
+                        <textarea id="input-data" rows="6" placeholder="Paste data here..." class="w-full p-4 rounded-lg bg-gray-700 border border-gray-600 focus:ring-emerald-500 focus:border-emerald-500 text-gray-100 placeholder-gray-400"></textarea>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button id="execute-text-op" class="w-full py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md shadow-emerald-500/30">
+                        Execute Text Operation
+                    </button>
+
+                    <!-- Output Area -->
+                    <div>
+                        <label for="output-data" class="block text-sm font-medium text-gray-300 mb-2">Output Result</label>
+                        <textarea id="output-data" rows="6" readonly placeholder="Result will appear here..." class="w-full p-4 rounded-lg bg-gray-700 border border-gray-600 text-gray-300 placeholder-gray-500"></textarea>
+                        <button onclick="copyToClipboard('output-data')" class="mt-2 text-sm text-emerald-400 hover:text-emerald-300 flex items-center">
+                            <i data-lucide="copy" class="w-4 h-4 mr-1"></i> Copy to Clipboard
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TOOL: Password Generator -->
+            <section id="password-content" class="tool-content">
+                <h2 class="text-3xl font-semibold mb-6 text-blue-400 flex items-center space-x-3">
+                    <i data-lucide="lock" class="w-7 h-7"></i>
+                    <span>Secure Password Generator</span>
+                </h2>
+                <div class="bg-gray-800 p-6 rounded-xl shadow-2xl border border-gray-700 space-y-6">
+                    
+                    <!-- Password Display -->
+                    <div class="relative">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Generated Password</label>
+                        <input type="text" id="generated-password" readonly value="P@sswOrd!23456" class="w-full p-4 rounded-lg text-2xl font-mono bg-gray-700 border border-gray-600 text-yellow-300 tracking-wider">
+                        <button onclick="copyToClipboard('generated-password')" class="absolute top-9 right-3 text-gray-400 hover:text-white">
+                            <i data-lucide="copy" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Password Length Slider -->
+                    <div>
+                        <label for="password-length" class="block text-sm font-medium text-gray-300 mb-2">
+                            Password Length: <span id="length-display" class="font-bold text-lg text-blue-400">16</span> characters
+                        </label>
+                        <input type="range" id="password-length" min="8" max="64" value="16" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg accent-blue-500">
+                    </div>
+
+                    <!-- Options Checkboxes -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                        <div class="flex items-center">
+                            <input id="use-upper" type="checkbox" checked class="w-4 h-4 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                            <label for="use-upper" class="ml-2 text-sm font-medium text-gray-300">Uppercase</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="use-lower" type="checkbox" checked class="w-4 h-4 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                            <label for="use-lower" class="ml-2 text-sm font-medium text-gray-300">Lowercase</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="use-numbers" type="checkbox" checked class="w-4 h-4 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                            <label for="use-numbers" class="ml-2 text-sm font-medium text-gray-300">Numbers</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="use-symbols" type="checkbox" checked class="w-4 h-4 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                            <label for="use-symbols" class="ml-2 text-sm font-medium text-gray-300">Symbols</label>
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <button class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200 shadow-md shadow-blue-500/30">
+                        Generate New Password
+                    </button>
+                </div>
+            </section>
+
+            <!-- TOOL: Data Analytics (New Feature with Chart) -->
+            <section id="analytics-content" class="tool-content">
+                <h2 class="text-3xl font-semibold mb-6 text-indigo-400 flex items-center space-x-3">
+                    <i data-lucide="bar-chart-3" class="w-7 h-7"></i>
+                    <span>Data Analytics & Visualization</span>
+                </h2>
+                <div class="bg-gray-800 p-6 rounded-xl shadow-2xl border border-gray-700 space-y-4">
+                    
+                    <!-- Chart Selector Dropdown (New) -->
+                    <div>
+                        <label for="chart-selector" class="block text-sm font-medium text-gray-300 mb-2">Select Visualization Type</label>
+                        <select id="chart-selector" class="w-full md:w-1/2 p-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 text-gray-100">
+                            <option value="severity_bar">Security Events by Severity (Bar Chart)</option>
+                            <option value="load_trend">System Load Average (Line Chart)</option>
+                        </select>
+                    </div>
+
+                    <p id="chart-description" class="text-gray-400">Visualization of recent security events by severity:</p>
+                    <div id="chart-svg-container" class="text-gray-300">
+                        <!-- D3.js chart will be rendered here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- TOOL: System Status Log -->
+            <section id="logs-content" class="tool-content">
+                <h2 class="text-3xl font-semibold mb-6 text-red-400 flex items-center space-x-3">
+                    <i data-lucide="activity" class="w-7 h-7"></i>
+                    <span>System Status Log</span>
+                </h2>
+                <div class="bg-gray-800 p-6 rounded-xl shadow-2xl border border-gray-700">
+                    <div class="overflow-x-auto rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Timestamp</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Level</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Source</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Message</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-700">
+                                <tr class="hover:bg-gray-700 transition duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2024-03-01 14:35:01</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-800 text-red-300">ERROR</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">AuthSrv</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">Failed login attempt detected from 192.168.1.10.</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700 transition duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2024-03-01 14:34:55</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-800 text-yellow-300">WARN</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">NetGuard</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">High volume data transfer initiated on port 8080.</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700 transition duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2024-03-01 14:34:30</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-800 text-blue-300">INFO</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">Systemd</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">Service 'CryptoUtility' successfully restarted.</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700 transition duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2024-03-01 14:34:10</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-800 text-green-300">SUCCESS</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">KeyMgr</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">Key rotation complete for system 'A'.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TOOL: Settings (Placeholder) -->
+            <section id="settings-content" class="tool-content">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-400 flex items-center space-x-3">
+                    <i data-lucide="settings" class="w-7 h-7"></i>
+                    <span>Dashboard Settings</span>
+                </h2>
+                <div class="bg-gray-800 p-6 rounded-xl shadow-2xl border border-gray-700">
+                    <p class="text-gray-400">Configuration options will appear here.</p>
+                </div>
+            </section>
+
+            <!-- Custom Message Box for Notifications/Alerts -->
+            <div id="message-box" class="fixed bottom-4 right-4 bg-gray-700 text-white p-4 rounded-lg shadow-xl hidden transition-opacity duration-300 z-50">
+                <p id="message-text" class="text-sm"></p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
