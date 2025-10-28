@@ -1,20 +1,13 @@
 <?php
-$dbFile = '../db/tasks.db';
+$tasksFile = '../db/tasks.json';
 
-// Create DB if not exists
-if (!file_exists($dbFile)) {
-    $db = new SQLite3($dbFile);
-    $db->exec("CREATE TABLE tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT NOT NULL)");
-} else {
-    $db = new SQLite3($dbFile);
+// Create tasks file if not exists
+if (!file_exists($tasksFile)) {
+    file_put_contents($tasksFile, json_encode([]));
 }
 
 // Get all tasks
 header('Content-Type: application/json');
-$result = $db->query('SELECT * FROM tasks ORDER BY id DESC');
-$tasks = [];
-while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-    $tasks[] = $row;
-}
-echo json_encode($tasks);
+$tasks = json_decode(file_get_contents($tasksFile), true);
+echo json_encode(array_reverse($tasks)); // Reverse to show latest first
 ?>
