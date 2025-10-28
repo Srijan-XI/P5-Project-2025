@@ -1,0 +1,23 @@
+# C++
+*.o
+*.exe
+*.dll
+*.so
+*.dylib
+build/
+.dat
+.data
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Temporary uploads (keep .gitkeep if needed)
+uploads/*
+!uploads/.gitkeep
