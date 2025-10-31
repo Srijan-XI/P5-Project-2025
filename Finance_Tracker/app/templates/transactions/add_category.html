@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Add Category - Finance Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus me-2"></i>Add New Category
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="needs-validation" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else ""), placeholder="e.g., Food, Transport, Salary") }}
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.name.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.color.label(class="form-label") }}
+                            <div class="input-group">
+                                {{ form.color(class="form-control form-control-color" + (" is-invalid" if form.color.errors else ""), type="color") }}
+                                <span class="input-group-text">Choose a color for this category</span>
+                            </div>
+                            {% if form.color.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.color.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('transactions.manage_categories') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-info">
+                                <i class="fas fa-save me-2"></i>Save Category
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Quick Category Suggestions -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">Suggested Categories</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-primary">Salary</span>
+                        <span class="badge bg-success">Freelance</span>
+                        <span class="badge bg-danger">Food & Dining</span>
+                        <span class="badge bg-warning text-dark">Transportation</span>
+                        <span class="badge bg-info">Entertainment</span>
+                        <span class="badge bg-secondary">Utilities</span>
+                        <span class="badge bg-dark">Shopping</span>
+                        <span class="badge" style="background-color: #6c757d;">Healthcare</span>
+                        <span class="badge" style="background-color: #e83e8c;">Education</span>
+                        <span class="badge" style="background-color: #fd7e14;">Rent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

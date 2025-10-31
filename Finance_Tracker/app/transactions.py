@@ -120,3 +120,18 @@ def add_category():
             return redirect(url_for('transactions.manage_categories'))
     
     return render_template('transactions/add_category.html', form=form)
+
+@transactions_bp.route('/categories/delete/<int:id>')
+@login_required
+def delete_category(id):
+    category = Category.query.get_or_404(id)
+    
+    # Check if category has transactions
+    if category.transactions:
+        flash(f'Cannot delete category "{category.name}" because it has {len(category.transactions)} transaction(s) associated with it.', 'warning')
+    else:
+        db.session.delete(category)
+        db.session.commit()
+        flash(f'Category "{category.name}" deleted successfully!', 'success')
+    
+    return redirect(url_for('transactions.manage_categories'))
