@@ -58,11 +58,21 @@ def dashboard():
                                  .order_by(desc('total'))\
                                  .limit(5).all()
     
+    # Prepare display data
+    balance_class = 'bg-primary' if balance >= 0 else 'bg-warning'
+    
+    # Enrich transactions with display logic
+    for t in recent_transactions:
+        t.text_class = 'text-success' if t.type == 'income' else 'text-danger'
+        t.badge_class = 'bg-success' if t.type == 'income' else 'bg-danger'
+        t.display_type = t.type.capitalize()
+    
     return render_template('dashboard.html',
                          recent_transactions=recent_transactions,
                          total_income=total_income,
                          total_expenses=total_expenses,
                          balance=balance,
+                         balance_class=balance_class,
                          monthly_income=monthly_income,
                          monthly_expenses=monthly_expenses,
                          category_expenses=category_expenses)

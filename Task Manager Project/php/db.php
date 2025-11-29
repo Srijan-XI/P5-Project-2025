@@ -9,5 +9,6 @@ if (!file_exists($tasksFile)) {
 // Get all tasks
 header('Content-Type: application/json');
 $tasks = json_decode(file_get_contents($tasksFile), true);
+if (!is_array($tasks)) $tasks = [];
 echo json_encode(array_reverse($tasks)); // Reverse to show latest first
 ?>
