@@ -74,6 +74,17 @@ def init_db():
         )
     ''')
     
+    # SEED DATA (Check if empty then insert)
+    cursor.execute('SELECT COUNT(*) FROM members')
+    if cursor.fetchone()[0] == 0:
+        cursor.execute("INSERT INTO members (id, name, email, status) VALUES ('LIB001', 'Demo Member', 'demo@library.com', 'active')")
+        print("🌱 Seeded demo member: LIB001")
+        
+    cursor.execute('SELECT COUNT(*) FROM books')
+    if cursor.fetchone()[0] == 0:
+        cursor.execute("INSERT INTO books (title, author, isbn, category, description) VALUES ('The Great Gatsby', 'F. Scott Fitzgerald', '9780743273565', 'Fiction', 'A classic novel of the Jazz Age.')")
+        print("🌱 Seeded demo book")
+    
     conn.commit()
     conn.close()
     print("✅ Database initialized successfully!")

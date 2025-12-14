@@ -79,7 +79,7 @@
                                 style="background: rgba(255,255,255,0.05); border-color: var(--glass-border); color: var(--text-secondary);"><i
                                     class="fas fa-id-card"></i></span>
                             <input type="text" class="form-control-custom" id="memberId"
-                                placeholder="Enter Member ID (e.g. MEM001)"
+                                placeholder="Enter Member ID (e.g. LIB001)"
                                 style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                         </div>
                     </div>
@@ -162,13 +162,13 @@
                         }
                     } catch (err) {
                         // Fallback/Mock for demo if API is down or empty
-                        if (memberId === 'MEM001') {
+                        if (memberId === 'LIB001') {
                             localStorage.setItem('userRole', 'member');
-                            localStorage.setItem('memberId', 'MEM001');
+                            localStorage.setItem('memberId', 'LIB001');
                             localStorage.setItem('memberName', 'Demo Member');
                             window.location.href = 'index.html';
                         } else {
-                            throw new Error('Member ID not found (try MEM001)');
+                            throw new Error('Member ID not found (try LIB001)');
                         }
                     }
                 }

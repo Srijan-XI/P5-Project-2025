@@ -72,9 +72,12 @@
                     </li>
                     <li class="nav-item ms-3">
                         <div class="user-profile-dropdown position-relative">
-                            <button class="user-avatar" id="userProfileBtn" onclick="toggleProfileMenu()">
+                            <button class="user-avatar d-flex align-items-center gap-2 bg-transparent border-0"
+                                id="userProfileBtn" onclick="toggleProfileMenu()" style="width: auto; padding: 0;">
                                 <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff"
-                                    id="userAvatar" alt="User">
+                                    id="userAvatar" alt="User"
+                                    style="width: 45px; height: 45px; border-radius: 50%; border: 3px solid var(--primary-color);">
+                                <i class="fas fa-chevron-down text-secondary" style="font-size: 0.8rem;"></i>
                             </button>
                             <!-- Dropdown Menu -->
                             <div class="profile-menu" id="profileMenu"

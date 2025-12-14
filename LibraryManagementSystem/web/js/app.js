@@ -3,6 +3,7 @@
 // ===========================
 const AppState = {
     currentSection: 'dashboard',
+    userRole: localStorage.getItem('userRole') || 'guest',
     books: [],
     members: [],
     activities: []
@@ -24,17 +25,83 @@ const elements = {
     addBookForm: document.getElementById('addBookForm'),
     activitiesList: document.getElementById('activitiesList'),
     booksGrid: document.getElementById('booksGrid'),
-    membersTableBody: document.getElementById('membersTableBody')
+    membersTableBody: document.getElementById('membersTableBody'),
+
+    // Quick Actions
+    issueBookBtn: document.getElementById('issueBookBtn'),
+    returnBookBtn: document.getElementById('returnBookBtn'),
+    generateReportBtn: document.getElementById('generateReportBtn'),
+
+    // Forms
+    issueBookForm: document.getElementById('issueBookForm'),
+    returnBookForm: document.getElementById('returnBookForm'),
+
+    // User Profile
+    userNameDisplay: document.getElementById('userNameDisplay'),
+    userRoleDisplay: document.getElementById('userRoleDisplay'),
+    userAvatar: document.getElementById('userAvatar')
 };
 
 // ===========================
 // INITIALIZATION
 // ===========================
 document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    updateUserProfile();
     initializeApp();
     setupEventListeners();
     loadInitialData();
 });
+
+function checkAuth() {
+    if (!localStorage.getItem('userRole')) {
+        window.location.href = 'login.html';
+    }
+}
+
+function updateUserProfile() {
+    const role = localStorage.getItem('userRole');
+    const name = role === 'admin' ? 'Admin User' : (localStorage.getItem('memberName') || 'Library Member');
+
+    if (elements.userNameDisplay) elements.userNameDisplay.textContent = name;
+    if (elements.userRoleDisplay) elements.userRoleDisplay.textContent = role === 'admin' ? 'Administrator' : 'Member';
+
+    // Update Avatar
+    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${role === 'admin' ? '6366f1' : '10b981'}&color=fff`;
+    if (elements.userAvatar) elements.userAvatar.src = avatarUrl;
+
+    // Hide Admin actions for members
+    if (role !== 'admin') {
+        document.querySelectorAll('.btn-primary-custom, .quick-action-btn').forEach(btn => {
+            if (btn.textContent.includes('Add') || btn.textContent.includes('Issue') || btn.textContent.includes('Return')) {
+                // btn.style.display = 'none'; // Or disable it
+                btn.classList.add('disabled');
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showNotification('Access Denied: Admin privileges required', 'info');
+                };
+            }
+        });
+
+        // Specifically for Quick Actions - Re-enable specific ones if needed, or hide container
+        // For this demo, let's just make Add/Issue/Return admin only.
+    }
+}
+
+function toggleProfileMenu() {
+    const menu = document.getElementById('profileMenu');
+    if (menu) {
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+}
+
+function logout() {
+    localStorage.clear();
+    window.location.href = 'login.html';
+}
 
 function initializeApp() {
     console.log('🚀 Library Management System Initialized');
@@ -55,50 +122,52 @@ function setupEventListeners() {
         });
     });
 
-    // Add Book Modal
-    elements.addBookBtns.forEach(btn => {
-        btn.addEventListener('click', () => openModal('addBookModal'));
-    });
+    // Modal Triggers
+    if (AppState.userRole === 'admin') {
+        elements.addBookBtns.forEach(btn => {
+            btn.addEventListener('click', () => openModal('addBookModal'));
+        });
+
+        if (elements.issueBookBtn) {
+            elements.issueBookBtn.addEventListener('click', () => {
+                populateBookSelect('issueBookId', 'available');
+                openModal('issueBookModal');
+            });
+        }
+
+        if (elements.returnBookBtn) {
+            elements.returnBookBtn.addEventListener('click', () => {
+                populateBookSelect('returnBookId', 'issued');
+                openModal('returnBookModal');
+            });
+        }
+
+        if (elements.addMemberBtns) {
+            elements.addMemberBtns.forEach(btn => {
+                btn.onclick = () => showNotification('Feature coming soon (Add Member)', 'info');
+            });
+        }
+    }
 
     // Modal Close
     elements.modalCloseBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             const modalId = btn.getAttribute('data-modal');
-            if (modalId) {
-                closeModal(modalId);
-            }
+            if (modalId) closeModal(modalId);
         });
     });
 
-    // Add Book Form
-    if (elements.addBookForm) {
-        elements.addBookForm.addEventListener('submit', handleAddBook);
+    // Forms
+    if (elements.addBookForm) elements.addBookForm.addEventListener('submit', handleAddBook);
+    if (elements.issueBookForm) elements.issueBookForm.addEventListener('submit', handleIssueBook);
+    if (elements.returnBookForm) elements.returnBookForm.addEventListener('submit', handleReturnBook);
+
+    // Other Actions
+    if (elements.generateReportBtn) {
+        elements.generateReportBtn.addEventListener('click', generateReport);
     }
 
-    // Quick Actions
-    const quickActionBtns = {
-        issueBookBtn: document.getElementById('issueBookBtn'),
-        returnBookBtn: document.getElementById('returnBookBtn'),
-        generateReportBtn: document.getElementById('generateReportBtn')
-    };
-
-    if (quickActionBtns.issueBookBtn) {
-        quickActionBtns.issueBookBtn.addEventListener('click', () => {
-            showNotification('Issue Book feature coming soon!', 'info');
-        });
-    }
-
-    if (quickActionBtns.returnBookBtn) {
-        quickActionBtns.returnBookBtn.addEventListener('click', () => {
-            showNotification('Return Book feature coming soon!', 'info');
-        });
-    }
-
-    if (quickActionBtns.generateReportBtn) {
-        quickActionBtns.generateReportBtn.addEventListener('click', generateReport);
-    }
-
-    // Search and Filter
+    // Search
     const bookSearch = document.getElementById('bookSearch');
     if (bookSearch) {
         bookSearch.addEventListener('input', debounce(filterBooks, 300));
@@ -108,34 +177,33 @@ function setupEventListeners() {
     if (filterBtn) {
         filterBtn.addEventListener('click', filterBooks);
     }
+
+    // Close profile menu on outside click
+    window.addEventListener('click', (e) => {
+        if (!e.target.closest('.user-profile-dropdown')) {
+            const menu = document.getElementById('profileMenu');
+            if (menu) menu.style.display = 'none';
+        }
+    });
 }
 
 // ===========================
-// NAVIGATION
+// NAVIGATION & MODALS
 // ===========================
 function switchSection(sectionId) {
-    // Update nav links
     elements.navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === `#${sectionId}`) {
-            link.classList.add('active');
-        }
+        if (link.getAttribute('href') === `#${sectionId}`) link.classList.add('active');
     });
 
-    // Update sections
     elements.sections.forEach(section => {
         section.classList.remove('active');
-        if (section.id === sectionId) {
-            section.classList.add('active');
-        }
+        if (section.id === sectionId) section.classList.add('active');
     });
 
     AppState.currentSection = sectionId;
 }
 
-// ===========================
-// MODAL MANAGEMENT
-// ===========================
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -152,166 +220,15 @@ function closeModal(modalId) {
     }
 }
 
-// Close modal on outside click
-window.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal-overlay')) {
-        e.target.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-});
-
 // ===========================
-// DATA LOADING
+// DATA LOGIC
 // ===========================
 async function loadInitialData() {
     try {
-        await Promise.all([
-            loadBooks(),
-            loadMembers(),
-            loadActivities()
-        ]);
+        await Promise.all([loadBooks(), loadMembers(), loadActivities()]);
     } catch (error) {
         console.error('Error loading initial data:', error);
-        // Load mock data as fallback
-        loadMockData();
     }
-}
-
-function loadMockData() {
-    // Mock Books
-    AppState.books = [
-        {
-            id: 1,
-            title: 'The Great Gatsby',
-            author: 'F. Scott Fitzgerald',
-            isbn: '978-0-7432-7356-5',
-            category: 'fiction',
-            status: 'available',
-            description: 'A classic American novel set in the Jazz Age'
-        },
-        {
-            id: 2,
-            title: 'To Kill a Mockingbird',
-            author: 'Harper Lee',
-            isbn: '978-0-06-112008-4',
-            category: 'fiction',
-            status: 'issued',
-            description: 'A gripping tale of racial injustice and childhood innocence'
-        },
-        {
-            id: 3,
-            title: 'A Brief History of Time',
-            author: 'Stephen Hawking',
-            isbn: '978-0-553-10953-5',
-            category: 'science',
-            status: 'available',
-            description: 'A landmark volume in science writing'
-        },
-        {
-            id: 4,
-            title: 'Clean Code',
-            author: 'Robert C. Martin',
-            isbn: '978-0-13-235088-4',
-            category: 'technology',
-            status: 'available',
-            description: 'A handbook of agile software craftsmanship'
-        },
-        {
-            id: 5,
-            title: 'Sapiens',
-            author: 'Yuval Noah Harari',
-            isbn: '978-0-06-231609-7',
-            category: 'history',
-            status: 'issued',
-            description: 'A brief history of humankind'
-        },
-        {
-            id: 6,
-            title: '1984',
-            author: 'George Orwell',
-            isbn: '978-0-452-28423-4',
-            category: 'fiction',
-            status: 'available',
-            description: 'A dystopian social science fiction novel'
-        }
-    ];
-
-    // Mock Members
-    AppState.members = [
-        {
-            id: 'MEM001',
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-            booksIssued: 2,
-            status: 'active'
-        },
-        {
-            id: 'MEM002',
-            name: 'Jane Smith',
-            email: 'jane.smith@example.com',
-            booksIssued: 1,
-            status: 'active'
-        },
-        {
-            id: 'MEM003',
-            name: 'Mike Johnson',
-            email: 'mike.j@example.com',
-            booksIssued: 0,
-            status: 'active'
-        },
-        {
-            id: 'MEM004',
-            name: 'Sarah Williams',
-            email: 'sarah.w@example.com',
-            booksIssued: 3,
-            status: 'active'
-        },
-        {
-            id: 'MEM005',
-            name: 'David Brown',
-            email: 'david.b@example.com',
-            booksIssued: 0,
-            status: 'inactive'
-        }
-    ];
-
-    // Mock Activities
-    AppState.activities = [
-        {
-            type: 'issue',
-            title: 'Book Issued',
-            description: 'John Doe borrowed "The Great Gatsby"',
-            time: '2 minutes ago'
-        },
-        {
-            type: 'return',
-            title: 'Book Returned',
-            description: 'Jane Smith returned "Clean Code"',
-            time: '15 minutes ago'
-        },
-        {
-            type: 'add',
-            title: 'New Book Added',
-            description: '"Sapiens" by Yuval Noah Harari added to library',
-            time: '1 hour ago'
-        },
-        {
-            type: 'issue',
-            title: 'Book Issued',
-            description: 'Sarah Williams borrowed "1984"',
-            time: '2 hours ago'
-        },
-        {
-            type: 'return',
-            title: 'Book Returned',
-            description: 'Mike Johnson returned "To Kill a Mockingbird"',
-            time: '3 hours ago'
-        }
-    ];
-
-    renderActivities();
-    renderBooks();
-    renderMembers();
 }
 
 async function loadBooks() {
@@ -321,9 +238,7 @@ async function loadBooks() {
             AppState.books = await response.json();
             renderBooks();
         }
-    } catch (error) {
-        console.log('Using mock data for books');
-    }
+    } catch (error) { console.error(error); }
 }
 
 async function loadMembers() {
@@ -333,9 +248,7 @@ async function loadMembers() {
             AppState.members = await response.json();
             renderMembers();
         }
-    } catch (error) {
-        console.log('Using mock data for members');
-    }
+    } catch (error) { console.error(error); }
 }
 
 async function loadActivities() {
@@ -345,17 +258,86 @@ async function loadActivities() {
             AppState.activities = await response.json();
             renderActivities();
         }
-    } catch (error) {
-        console.log('Using mock data for activities');
-    }
+    } catch (error) { console.error(error); }
 }
 
 // ===========================
-// RENDERING
+// ACTIONS
+// ===========================
+async function handleIssueBook(e) {
+    e.preventDefault();
+    const bookId = document.getElementById('issueBookId').value;
+    const memberId = document.getElementById('issueMemberId').value;
+    const dueDate = document.getElementById('issueDueDate').value;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/transactions/issue`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ book_id: bookId, member_id: memberId, due_date: dueDate })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showNotification('Book issued successfully', 'success');
+            closeModal('issueBookModal');
+            loadInitialData(); // Refresh all
+        } else {
+            showNotification(data.error || 'Failed to issue book', 'info');
+        }
+    } catch (error) {
+        showNotification('Network error', 'info');
+    }
+}
+
+async function handleReturnBook(e) {
+    e.preventDefault();
+    const bookId = document.getElementById('returnBookId').value;
+    const memberId = document.getElementById('returnMemberId').value;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/transactions/return`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ book_id: bookId, member_id: memberId })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showNotification('Book returned successfully', 'success');
+            closeModal('returnBookModal');
+            loadInitialData(); // Refresh all
+        } else {
+            showNotification(data.error || 'Failed to return book', 'info');
+        }
+    } catch (error) {
+        showNotification('Network error', 'info');
+    }
+}
+
+function populateBookSelect(selectId, statusFilter) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    select.innerHTML = '<option value="">Choose a book...</option>';
+
+    AppState.books
+        .filter(book => book.status === statusFilter)
+        .forEach(book => {
+            const option = document.createElement('option');
+            option.value = book.id;
+            option.textContent = `${book.title} (ID: ${book.id})`;
+            select.appendChild(option);
+        });
+}
+
+// ===========================
+// RENDERING & HELPERS
 // ===========================
 function renderActivities() {
     if (!elements.activitiesList) return;
-
     elements.activitiesList.innerHTML = AppState.activities.map(activity => `
         <div class="activity-item">
             <div class="activity-icon icon-${activity.type}">
@@ -372,32 +354,28 @@ function renderActivities() {
 
 function renderBooks() {
     if (!elements.booksGrid) return;
-
-    const booksHTML = AppState.books.map(book => `
+    elements.booksGrid.innerHTML = AppState.books.map(book => `
         <div class="col-lg-4 col-md-6">
             <div class="book-card" data-book-id="${book.id}">
                 <div class="book-cover" style="background: ${getBookGradient(book.category)}">
                     <i class="fas fa-book"></i>
                 </div>
                 <div class="book-info">
-                    <h3 class="book-title">${book.title}</h3>
+                    <h3 class="book-title text-truncate">${book.title}</h3>
                     <p class="book-author">by ${book.author}</p>
                     <div class="book-meta">
-                        <span class="book-category">${book.category}</span>
+                        <span class="book-category">${book.category || 'General'}</span>
                         <span class="book-status ${book.status}">${book.status}</span>
                     </div>
                 </div>
             </div>
         </div>
     `).join('');
-
-    elements.booksGrid.innerHTML = booksHTML;
 }
 
 function renderMembers() {
     if (!elements.membersTableBody) return;
-
-    const membersHTML = AppState.members.map(member => `
+    elements.membersTableBody.innerHTML = AppState.members.map(member => `
         <tr>
             <td><strong>${member.id}</strong></td>
             <td>
@@ -412,27 +390,15 @@ function renderMembers() {
             <td><strong>${member.booksIssued}</strong></td>
             <td><span class="status-badge ${member.status}">${member.status}</span></td>
             <td>
-                <button class="action-btn" title="View Details">
-                    <i class="fas fa-eye"></i>
-                </button>
-                <button class="action-btn" title="Edit">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="action-btn" title="Delete">
-                    <i class="fas fa-trash"></i>
-                </button>
+                <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
             </td>
         </tr>
     `).join('');
-
-    elements.membersTableBody.innerHTML = membersHTML;
 }
 
-// ===========================
-// FORM HANDLING
-// ===========================
 async function handleAddBook(e) {
     e.preventDefault();
+    const adminPassword = localStorage.getItem('adminToken'); // Get pwd from login
 
     const bookData = {
         title: document.getElementById('bookTitle').value,
@@ -447,7 +413,8 @@ async function handleAddBook(e) {
         const response = await fetch(`${API_BASE_URL}/books`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Admin-Password': adminPassword
             },
             body: JSON.stringify(bookData)
         });
@@ -456,21 +423,17 @@ async function handleAddBook(e) {
             showNotification('Book added successfully!', 'success');
             closeModal('addBookModal');
             elements.addBookForm.reset();
-            await loadBooks();
+            loadBooks(); // refresh
         } else {
-            throw new Error('Failed to add book');
+            const data = await response.json();
+            showNotification(data.error || 'Failed to add book', 'info');
         }
     } catch (error) {
-        console.error('Error adding book:', error);
-        // Add to local state as fallback
-        bookData.id = AppState.books.length + 1;
-        AppState.books.push(bookData);
-        renderBooks();
-        showNotification('Book added successfully! (Local only)', 'success');
-        closeModal('addBookModal');
-        elements.addBookForm.reset();
+        showNotification('Error adding book', 'info');
     }
 }
+
+// ... existing utility functions ...
 
 // ===========================
 // FILTERING
@@ -482,9 +445,9 @@ function filterBooks() {
 
     const filteredBooks = AppState.books.filter(book => {
         const matchesSearch = book.title.toLowerCase().includes(searchTerm) ||
-                            book.author.toLowerCase().includes(searchTerm) ||
-                            book.isbn.includes(searchTerm);
-        
+            book.author.toLowerCase().includes(searchTerm) ||
+            book.isbn.includes(searchTerm);
+
         const matchesCategory = !categoryFilter || book.category === categoryFilter;
         const matchesAvailability = !availabilityFilter || book.status === availabilityFilter;
 
@@ -503,7 +466,7 @@ function filterBooks() {
 // ===========================
 function animateStatCards() {
     const statValues = document.querySelectorAll('.stat-value');
-    
+
     statValues.forEach(stat => {
         const target = parseInt(stat.getAttribute('data-value').replace(/,/g, ''));
         const duration = 2000;
@@ -664,7 +627,7 @@ function showNotification(message, type = 'info') {
         z-index: 10000;
         animation: slideInRight 0.3s ease;
     `;
-    
+
     notification.innerHTML = `
         <div style="display: flex; align-items: center; gap: 1rem;">
             <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}" 
@@ -672,9 +635,9 @@ function showNotification(message, type = 'info') {
             <span>${message}</span>
         </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
         notification.style.animation = 'slideOutRight 0.3s ease';
         setTimeout(() => notification.remove(), 300);
