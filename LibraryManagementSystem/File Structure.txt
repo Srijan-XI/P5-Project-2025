@@ -1,10 +1,44 @@
 LibraryManagementSystem/
-├── include/
-│   ├── Book.hpp
-│   └── Library.hpp
-├── src/
-│   ├── Book.cpp
-│   ├── Library.cpp
-│   └── main.cpp
-├── data/
-│   └── library.dat   // created automatically
+├── include/                    // C++ Header Files
+│   ├── Book.hpp               // Book class definition
+│   ├── Library.hpp            // Library class definition
+│   └── Security.hpp           // Security/authentication utilities
+│
+├── src/                       // C++ Source Files
+│   ├── Book.cpp               // Book class implementation
+│   ├── Library.cpp            // Library class implementation
+│   ├── main.cpp               // Main C++ entry point
+│   ├── build.bat              // C++ compilation script
+│   └── library_mgmt.exe       // Compiled C++ executable
+│
+├── web/                       // Frontend Web Interface
+│   ├── index.html             // Main dashboard page
+│   ├── login.html             // Login/authentication page
+│   ├── js/
+│   │   └── app.js             // Main JavaScript logic
+│   └── styles/
+│       └── main.css           // Main stylesheet
+│
+├── server/                    // Node.js Backend Server
+│   └── server.js              // Express.js server implementation
+│
+├── api/                       // Python API Server
+│   └── app.py                 // Flask API endpoints
+│
+├── data/                      // Data Storage
+│   ├── library.dat            // C++ binary data file
+│   └── library.db             // SQLite database
+│
+├── node_modules/              // Node.js dependencies (auto-generated)
+│
+├── .gitignore                 // Git ignore configuration
+├── package.json               // Node.js dependencies config
+├── package-lock.json          // Lock file for Node.js dependencies
+├── requirements.txt           // Python dependencies
+├── run.bat                    // Main application launcher
+├── start-simple.bat           // Alternative launcher
+├── README.md                  // Project documentation
+├── QUICK_START.md             // Quick start guide
+├── PROJECT_SUMMARY.md         // Detailed project summary
+├── File Structure.txt         // This file
+└── new_draft.txt              // Draft notes
