@@ -1,0 +1,9 @@
+/* Modal styles */
+#overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+#overlay.show { opacity: 1; pointer-events: auto; }
+
+#modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -40%); width: 480px; max-width: 90vw; background: var(--color-surface); border: 1px solid #1f2937; border-radius: 10px; opacity: 0; pointer-events: none; transition: transform .2s ease, opacity .2s ease; }
+#modal.show { transform: translate(-50%, -50%); opacity: 1; pointer-events: auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #1f2937; }
+.modal-body { padding: 12px; display: grid; gap: 8px; }
+.modal-footer { padding: 12px; display: flex; justify-content: flex-end; gap: 8px; }

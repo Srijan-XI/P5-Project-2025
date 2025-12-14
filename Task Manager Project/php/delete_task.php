@@ -1,12 +1,33 @@
 <?php
-$data = json_decode(file_get_contents('php://input'), true);
-if (!isset($data['id'])) exit;
+require_once 'config.php';
+require_once 'Database.php';
 
-$tasksFile = '../db/tasks.json';
-$tasks = json_decode(file_get_contents($tasksFile), true);
-$tasks = array_filter($tasks, function($task) use ($data) {
-    return $task['id'] != $data['id'];
-});
-file_put_contents($tasksFile, json_encode(array_values($tasks)));
-echo json_encode(['success' => true]);
+header('Content-Type: application/json');
+
+try {
+    $input = file_get_contents('php://input');
+    $data = json_decode($input, true);
+
+    if (!isset($data['id'])) {
+        http_response_code(400);
+        echo json_encode([
+            'error' => true,
+            'message' => 'Task ID is required'
+        ]);
+        exit;
+    }
+
+    $db = new Database(DB_PATH);
+    $result = $db->deleteTask($data['id']);
+    
+    echo json_encode($result);
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        'error' => true,
+        'message' => $e->getMessage()
+    ]);
+    error_log("Delete task error: " . $e->getMessage());
+}
 ?>

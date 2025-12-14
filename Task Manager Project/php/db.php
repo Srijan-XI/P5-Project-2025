@@ -1,14 +1,19 @@
 <?php
-$tasksFile = '../db/tasks.json';
+require_once 'config.php';
+require_once 'Database.php';
 
-// Create tasks file if not exists
-if (!file_exists($tasksFile)) {
-    file_put_contents($tasksFile, json_encode([]));
-}
-
-// Get all tasks
 header('Content-Type: application/json');
-$tasks = json_decode(file_get_contents($tasksFile), true);
-if (!is_array($tasks)) $tasks = [];
-echo json_encode(array_reverse($tasks)); // Reverse to show latest first
+
+try {
+    $db = new Database(DB_PATH);
+    $tasks = $db->getAllTasks();
+    echo json_encode($tasks);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        'error' => true,
+        'message' => 'Failed to fetch tasks'
+    ]);
+    error_log($e->getMessage());
+}
 ?>

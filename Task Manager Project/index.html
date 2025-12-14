@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="src/css/main.css">
 </head>
 
 <body>
@@ -26,15 +26,38 @@
 
         <form id="task-form">
             <div class="input-group">
-                <input type="text" id="task-input" placeholder="What needs to be done?" required autocomplete="off">
+                <input type="text" id="task-input" placeholder="What needs to be done?" required autocomplete="off"
+                    maxlength="500">
+                <select id="priority" class="priority-select" aria-label="Task priority">
+                    <option value="low">🟢 Low</option>
+                    <option value="medium" selected>🟡 Medium</option>
+                    <option value="high">🔴 High</option>
+                </select>
                 <button type="submit" class="add-btn">
                     <i class="fas fa-plus"></i>
                 </button>
             </div>
+            <div class="form-footer">
+                <div class="char-counter" id="char-counter">0/500</div>
+            </div>
         </form>
 
+        <div class="filter-bar">
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter-status="all">All</button>
+                <button class="filter-btn" data-filter-status="active">Active</button>
+                <button class="filter-btn" data-filter-status="completed">Completed</button>
+            </div>
+            <div class="filter-group">
+                <button class="priority-filter-btn active" data-filter-priority="all">All Priorities</button>
+                <button class="priority-filter-btn" data-filter-priority="high">🔴 High</button>
+                <button class="priority-filter-btn" data-filter-priority="medium">🟡 Medium</button>
+                <button class="priority-filter-btn" data-filter-priority="low">🟢 Low</button>
+            </div>
+        </div>
+
         <div class="task-list-container">
-            <ul id="task-list">
+            <ul id="task-list" class="task-list">
                 <!-- Tasks will be injected here -->
             </ul>
             <div id="empty-state" class="hidden">
@@ -44,19 +67,11 @@
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div id="edit-modal" class="modal hidden">
-        <div class="modal-content">
-            <h2>Edit Task</h2>
-            <input type="text" id="edit-input" placeholder="Update your task...">
-            <div class="modal-actions">
-                <button id="cancel-edit" class="btn-secondary">Cancel</button>
-                <button id="save-edit" class="btn-primary">Save Changes</button>
-            </div>
-        </div>
-    </div>
+    <!-- Modal Elements for new modal module -->
+    <div id="overlay"></div>
+    <div id="modal" class="fade-in"></div>
 
-    <script src="scripts/app.js"></script>
+    <script type="module" src="src/js/main.js"></script>
 </body>
 
 </html>

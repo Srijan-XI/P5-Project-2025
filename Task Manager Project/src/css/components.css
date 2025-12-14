@@ -1,0 +1,11 @@
+/* Buttons, inputs, badges */
+.btn { padding: 8px 12px; border: 0; border-radius: 6px; cursor: pointer; }
+.btn.primary { background: var(--color-primary); color: white; }
+.btn.danger { background: var(--color-danger); color: white; }
+
+input, select { background: var(--color-surface); color: var(--color-text); border: 1px solid #1f2937; padding: 8px; border-radius: 6px; }
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; }
+.badge.low { background: #1f2937; }
+.badge.medium { background: var(--color-primary); }
+.badge.high { background: var(--color-danger); }

@@ -1,0 +1,4 @@
+/* Filter bar styles */
+.filters { display: flex; gap: 8px; margin-bottom: 12px; }
+.filters .group { display: flex; gap: 6px; }
+.filters .btn.active { outline: 2px solid var(--color-primary); }
