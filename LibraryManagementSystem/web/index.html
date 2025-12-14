@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modern Library Management System - Streamline your library operations with our intuitive and powerful platform">
+    <title>Library Management System - Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top glassmorphism-nav">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <div class="brand-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <span class="brand-text ms-3">LibraryMS</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard">
+                            <i class="fas fa-home me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#books">
+                            <i class="fas fa-book me-2"></i>Books
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#members">
+                            <i class="fas fa-users me-2"></i>Members
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#analytics">
+                            <i class="fas fa-chart-line me-2"></i>Analytics
+                        </a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <div class="user-profile-dropdown">
+                            <button class="user-avatar" id="userProfileBtn">
+                                <img src="https://ui-avatars.com/api/?name=Admin+User&background=6366f1&color=fff" alt="User">
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section-container active">
+            <div class="container-fluid">
+                <!-- Welcome Header -->
+                <div class="welcome-header">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <h1 class="page-title">Welcome back, Admin! 👋</h1>
+                            <p class="page-subtitle">Here's what's happening with your library today.</p>
+                        </div>
+                        <div class="col-lg-4 text-end">
+                            <button class="btn-primary-custom" id="addBookBtn">
+                                <i class="fas fa-plus me-2"></i>Add New Book
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="row g-4 mb-5">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-card stat-card-purple">
+                            <div class="stat-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" data-value="1,247">0</h3>
+                                <p class="stat-label">Total Books</p>
+                                <div class="stat-trend">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>12% from last month</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-card stat-card-blue">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" data-value="856">0</h3>
+                                <p class="stat-label">Active Members</p>
+                                <div class="stat-trend">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>8% from last month</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-card stat-card-green">
+                            <div class="stat-icon">
+                                <i class="fas fa-book-reader"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" data-value="342">0</h3>
+                                <p class="stat-label">Books Issued</p>
+                                <div class="stat-trend">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>15% from last week</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-card stat-card-orange">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 class="stat-value" data-value="23">0</h3>
+                                <p class="stat-label">Overdue Books</p>
+                                <div class="stat-trend stat-trend-down">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>5% from last week</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities & Quick Actions -->
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="content-card">
+                            <div class="card-header-custom">
+                                <h2 class="card-title">Recent Activities</h2>
+                                <button class="btn-link-custom">View All</button>
+                            </div>
+                            <div class="activities-list" id="activitiesList">
+                                <!-- Activities will be dynamically loaded -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="content-card">
+                            <div class="card-header-custom">
+                                <h2 class="card-title">Quick Actions</h2>
+                            </div>
+                            <div class="quick-actions">
+                                <button class="quick-action-btn" id="issueBookBtn">
+                                    <i class="fas fa-hand-holding-medical"></i>
+                                    <span>Issue Book</span>
+                                </button>
+                                <button class="quick-action-btn" id="returnBookBtn">
+                                    <i class="fas fa-undo"></i>
+                                    <span>Return Book</span>
+                                </button>
+                                <button class="quick-action-btn" id="addMemberBtn">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Add Member</span>
+                                </button>
+                                <button class="quick-action-btn" id="generateReportBtn">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Generate Report</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Books Section -->
+        <section id="books" class="section-container">
+            <div class="container-fluid">
+                <div class="welcome-header">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-lg-8">
+                            <h1 class="page-title">Books Library 📚</h1>
+                            <p class="page-subtitle">Manage your entire book collection</p>
+                        </div>
+                        <div class="col-lg-4 text-end">
+                            <button class="btn-primary-custom" id="addBookBtn2">
+                                <i class="fas fa-plus me-2"></i>Add New Book
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="content-card mb-4">
+                    <div class="row g-3">
+                        <div class="col-lg-6">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="bookSearch" placeholder="Search books by title, author, or ISBN...">
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <select class="form-select-custom" id="categoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="fiction">Fiction</option>
+                                <option value="non-fiction">Non-Fiction</option>
+                                <option value="science">Science</option>
+                                <option value="technology">Technology</option>
+                                <option value="history">History</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <select class="form-select-custom" id="availabilityFilter">
+                                <option value="">All Status</option>
+                                <option value="available">Available</option>
+                                <option value="issued">Issued</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button class="btn-secondary-custom w-100" id="filterBtn">
+                                <i class="fas fa-filter me-2"></i>Filter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Books Grid -->
+                <div class="row g-4" id="booksGrid">
+                    <!-- Books will be dynamically loaded -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Members Section -->
+        <section id="members" class="section-container">
+            <div class="container-fluid">
+                <div class="welcome-header">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-lg-8">
+                            <h1 class="page-title">Members Directory 👥</h1>
+                            <p class="page-subtitle">Manage library members and their records</p>
+                        </div>
+                        <div class="col-lg-4 text-end">
+                            <button class="btn-primary-custom" id="addMemberBtn2">
+                                <i class="fas fa-user-plus me-2"></i>Add New Member
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Members Table -->
+                <div class="content-card">
+                    <div class="table-responsive">
+                        <table class="table-custom" id="membersTable">
+                            <thead>
+                                <tr>
+                                    <th>Member ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Books Issued</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membersTableBody">
+                                <!-- Members will be dynamically loaded -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section-container">
+            <div class="container-fluid">
+                <div class="welcome-header mb-4">
+                    <h1 class="page-title">Analytics & Reports 📊</h1>
+                    <p class="page-subtitle">Track your library's performance metrics</p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="content-card">
+                            <div class="card-header-custom">
+                                <h2 class="card-title">Book Circulation Trends</h2>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="circulationChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="content-card">
+                            <div class="card-header-custom">
+                                <h2 class="card-title">Category Distribution</h2>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add Book Modal -->
+    <div class="modal-overlay" id="addBookModal">
+        <div class="modal-container">
+            <div class="modal-header-custom">
+                <h2>Add New Book</h2>
+                <button class="modal-close" data-modal="addBookModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addBookForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Book Title</label>
+                            <input type="text" class="form-control-custom" id="bookTitle" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Author</label>
+                            <input type="text" class="form-control-custom" id="bookAuthor" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">ISBN</label>
+                            <input type="text" class="form-control-custom" id="bookISBN" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Category</label>
+                            <select class="form-select-custom" id="bookCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="fiction">Fiction</option>
+                                <option value="non-fiction">Non-Fiction</option>
+                                <option value="science">Science</option>
+                                <option value="technology">Technology</option>
+                                <option value="history">History</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control-custom" id="bookDescription" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer-custom">
+                        <button type="button" class="btn-secondary-custom" data-modal="addBookModal">Cancel</button>
+                        <button type="submit" class="btn-primary-custom">Add Book</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

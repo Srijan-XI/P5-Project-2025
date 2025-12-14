@@ -1,1 +1,4 @@
 adding user interface  desgin
+tech stack : html, css, js, bootstrap, tailwindcss, cpp, sqlite, 
+py for api management and database 
+nodejs for server 

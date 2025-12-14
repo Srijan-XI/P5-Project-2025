@@ -8,14 +8,52 @@ build/
 .dat
 .data
 
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+.pytest_cache/
+.coverage
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.dat
+
 # IDE files
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+
 # Logs
 *.log
+logs/
 
 # Environment variables
 .env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
 
 # Temporary uploads (keep .gitkeep if needed)
 uploads/*
