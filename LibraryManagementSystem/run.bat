@@ -6,25 +6,23 @@ echo.
 echo Starting all components...
 echo.
 
-:: Check if C++ executable exists
-if exist "src\library_mgmt.exe" (
-    echo [1/3] Starting C++ Library System...
-    start "C++ Library System" cmd /k "cd src && library_mgmt.exe"
-    timeout /t 2 /nobreak > nul
-    echo [OK] C++ system started
+:: Check if C++ executable exists (needed for security)
+if not exist "src\library_mgmt.exe" (
+    echo [WARNING] C++ Security Module not found.
+    echo          Please build it using: cd src ^&^& build.bat
+    echo.
 ) else (
-    echo [WARNING] C++ executable not found. Skipping...
-    echo          Build it first using: cd src ^&^& build.bat
+    echo [OK] C++ Security Module found.
 )
 echo.
 
-echo [2/3] Starting Python Flask API Server...
+echo [1/2] Starting Python Flask API Server...
 start "Python API Server" cmd /k "python api/app.py"
 timeout /t 3 /nobreak > nul
 echo [OK] API server started on port 5000
 echo.
 
-echo [3/3] Starting Node.js Web Server...
+echo [2/2] Starting Node.js Web Server...
 start "Node.js Web Server" cmd /k "npm start"
 timeout /t 3 /nobreak > nul
 echo [OK] Web server started on port 3000
@@ -34,7 +32,6 @@ echo ================================================
 echo            All Systems Running!
 echo ================================================
 echo.
-echo C++ Library System: Running in separate window
 echo Python API Server:  http://localhost:5000
 echo Node.js Web Server: http://localhost:3000
 echo.
@@ -52,7 +49,6 @@ echo.
 echo Stopping all servers...
 taskkill /FI "WindowTitle eq Python API Server*" /T /F > nul 2>&1
 taskkill /FI "WindowTitle eq Node.js Web Server*" /T /F > nul 2>&1
-taskkill /FI "WindowTitle eq C++ Library System*" /T /F > nul 2>&1
 
 echo [OK] All servers stopped.
 echo.

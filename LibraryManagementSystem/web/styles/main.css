@@ -7,7 +7,7 @@
     --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-    
+
     /* Solid Colors */
     --primary-color: #6366f1;
     --secondary-color: #8b5cf6;
@@ -16,7 +16,7 @@
     --warning-color: #f59e0b;
     --danger-color: #ef4444;
     --info-color: #3b82f6;
-    
+
     /* Neutral Colors */
     --bg-primary: #0f0f1e;
     --bg-secondary: #1a1a2e;
@@ -24,31 +24,31 @@
     --text-primary: #ffffff;
     --text-secondary: #a0aec0;
     --text-muted: #718096;
-    
+
     /* Card & Glass Effects */
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    
+
     /* Spacing */
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 1.5rem;
     --spacing-lg: 2rem;
     --spacing-xl: 3rem;
-    
+
     /* Border Radius */
     --radius-sm: 0.5rem;
     --radius-md: 1rem;
     --radius-lg: 1.5rem;
     --radius-full: 9999px;
-    
+
     /* Transitions */
     --transition-fast: 0.2s ease;
     --transition-base: 0.3s ease;
     --transition-slow: 0.5s ease;
-    
+
     /* Typography */
     --font-primary: 'Inter', sans-serif;
     --font-display: 'Outfit', sans-serif;
@@ -69,7 +69,7 @@ body {
     color: var(--text-primary);
     overflow-x: hidden;
     min-height: 100vh;
-    background-image: 
+    background-image:
         radial-gradient(at 0% 0%, rgba(102, 126, 234, 0.1) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
 }
@@ -203,6 +203,7 @@ body {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -625,6 +626,12 @@ body {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+.form-select-custom option {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: 10px;
+}
+
 textarea.form-control-custom {
     resize: vertical;
     min-height: 100px;
@@ -677,6 +684,7 @@ textarea.form-control-custom {
     0% {
         transform: translate(-50%, -50%) rotate(0deg);
     }
+
     100% {
         transform: translate(-50%, -50%) rotate(360deg);
     }
@@ -874,6 +882,7 @@ textarea.form-control-custom {
         opacity: 0;
         transform: translateY(50px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -942,20 +951,20 @@ textarea.form-control-custom {
     .page-title {
         font-size: 2rem;
     }
-    
+
     .stat-card {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .quick-actions {
         grid-template-columns: 1fr;
     }
-    
+
     .modal-container {
         width: 95%;
     }
-    
+
     .main-content {
         padding: 1rem;
     }
@@ -985,9 +994,12 @@ textarea.form-control-custom {
    LOADING ANIMATION
    =========================== */
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.5;
     }
@@ -995,4 +1007,60 @@ textarea.form-control-custom {
 
 .loading {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ===========================
+   LOGIN PAGE
+   =========================== */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.login-card {
+    background: rgba(15, 15, 30, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 3rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.5s ease;
+}
+
+.role-selector {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.role-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.role-btn.active {
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.role-btn:hover:not(.active) {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
 }

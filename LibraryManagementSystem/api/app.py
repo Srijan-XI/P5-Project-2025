@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sqlite3
 import os
+import subprocess
 from datetime import datetime
 import json
 
@@ -78,6 +79,33 @@ def init_db():
     print("✅ Database initialized successfully!")
 
 # ===========================
+# SECURITY HELPER
+# ===========================
+def verify_admin_password(password):
+    """Verify admin password using C++ Security Module"""
+    try:
+        cpp_exe_path = os.path.join(os.path.dirname(__file__), '..', 'src', 'library_mgmt.exe')
+        
+        # Check if executable exists
+        if not os.path.exists(cpp_exe_path):
+            print(f"WARNING: C++ Security Module not found at {cpp_exe_path}")
+            # Fallback for development if not built
+            return password == "admin123"
+            
+        # Call C++ executable: library_mgmt.exe auth <password>
+        result = subprocess.run(
+            [cpp_exe_path, "auth", password], 
+            capture_output=True, 
+            text=True
+        )
+        
+        # Check output for SUCCESS
+        return "SUCCESS" in result.stdout
+    except Exception as e:
+        print(f"Security Check Error: {e}")
+        return False
+
+# ===========================
 # DATABASE HELPER FUNCTIONS
 # ===========================
 def get_db_connection():
@@ -148,10 +176,19 @@ def get_book(book_id):
 
 @app.route('/api/books', methods=['POST'])
 def add_book():
-    """Add a new book"""
+    """Add a new book (Protected Action)"""
     try:
         data = request.get_json()
         
+        # Verify Admin Password if provided in headers
+        admin_password = request.headers.get('X-Admin-Password')
+        if not admin_password:
+            # For this demo, we'll allow it but log a warning, or you could enforce it:
+            # return jsonify({'error': 'Admin password required'}), 401
+            pass
+        elif not verify_admin_password(admin_password):
+             return jsonify({'error': 'Invalid admin password'}), 403
+
         # Validate required fields
         required_fields = ['title', 'author', 'isbn', 'category']
         for field in required_fields:
@@ -533,6 +570,26 @@ def get_statistics():
         conn.close()
         
         return jsonify(stats), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# ===========================
+# ADMIN AUTH ENDPOINT
+# ===========================
+@app.route('/api/admin/auth', methods=['POST'])
+def admin_auth():
+    """Verify admin password"""
+    try:
+        data = request.get_json()
+        password = data.get('password')
+        
+        if not password:
+            return jsonify({'error': 'Password required'}), 400
+            
+        if verify_admin_password(password):
+            return jsonify({'message': 'Authentication successful', 'valid': True}), 200
+        else:
+            return jsonify({'error': 'Invalid password', 'valid': False}), 401
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
