@@ -1,25 +1,27 @@
 /**
- * API Module - Handles all server communication
+ * API Module - LocalStorage-based task management
+ * No backend required - all data stored in browser
  */
+
+const STORAGE_KEY = 'taskManagerTasks';
+
+// Get next available ID
+function getNextId(tasks) {
+    if (tasks.length === 0) return 1;
+    return Math.max(...tasks.map(t => t.id)) + 1;
+}
 
 const API = {
     /**
-     * Fetch all tasks from server
+     * Fetch all tasks from localStorage
      */
     async getTasks() {
         try {
-            const response = await fetch('php/db.php');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                throw new Error("Received non-JSON response from server. Ensure PHP is running.");
-            }
-            return await response.json();
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
         } catch (error) {
             console.error('Error fetching tasks:', error);
-            throw error;
+            return [];
         }
     },
 
@@ -28,22 +30,19 @@ const API = {
      */
     async createTask(description, priority = 'medium') {
         try {
-            const response = await fetch('php/add_task.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ description, priority })
-            });
+            const tasks = await this.getTasks();
+            const newTask = {
+                id: getNextId(tasks),
+                description: description.trim(),
+                priority: priority,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
 
-            if (!response.ok) {
-                throw new Error('Failed to add task');
-            }
+            tasks.push(newTask);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 
-            const data = await response.json();
-            if (data.error) {
-                throw new Error(data.message || 'Failed to add task');
-            }
-
-            return data;
+            return { success: true, task: newTask };
         } catch (error) {
             console.error('Error adding task:', error);
             throw error;
@@ -55,26 +54,21 @@ const API = {
      */
     async updateTask(id, description, priority = null, completed = null) {
         try {
-            const payload = { id, description };
-            if (priority !== null) payload.priority = priority;
-            if (completed !== null) payload.completed = completed;
+            const tasks = await this.getTasks();
+            const taskIndex = tasks.findIndex(t => t.id === id);
 
-            const response = await fetch('php/update_task.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to update task');
+            if (taskIndex === -1) {
+                throw new Error('Task not found');
             }
 
-            const data = await response.json();
-            if (data.error) {
-                throw new Error(data.message || 'Failed to update task');
-            }
+            tasks[taskIndex].description = description.trim();
+            if (priority !== null) tasks[taskIndex].priority = priority;
+            if (completed !== null) tasks[taskIndex].completed = completed;
+            tasks[taskIndex].updatedAt = new Date().toISOString();
 
-            return data;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+
+            return { success: true, task: tasks[taskIndex] };
         } catch (error) {
             console.error('Error updating task:', error);
             throw error;
@@ -86,17 +80,19 @@ const API = {
      */
     async toggleComplete(id, completed) {
         try {
-            const response = await fetch('php/update_task.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, completed })
-            });
+            const tasks = await this.getTasks();
+            const taskIndex = tasks.findIndex(t => t.id === id);
 
-            if (!response.ok) {
-                throw new Error('Failed to update task');
+            if (taskIndex === -1) {
+                throw new Error('Task not found');
             }
 
-            return await response.json();
+            tasks[taskIndex].completed = completed;
+            tasks[taskIndex].updatedAt = new Date().toISOString();
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+
+            return { success: true, task: tasks[taskIndex] };
         } catch (error) {
             console.error('Error toggling task:', error);
             throw error;
@@ -108,24 +104,27 @@ const API = {
      */
     async deleteTask(id) {
         try {
-            const response = await fetch('php/delete_task.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            });
+            const tasks = await this.getTasks();
+            const filteredTasks = tasks.filter(t => t.id !== id);
 
-            if (!response.ok) {
-                throw new Error('Failed to delete task');
-            }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredTasks));
 
-            const data = await response.json();
-            if (data.error) {
-                throw new Error(data.message || 'Failed to delete task');
-            }
-
-            return data;
+            return { success: true };
         } catch (error) {
             console.error('Error deleting task:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Clear all tasks (for testing/reset)
+     */
+    async clearAll() {
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+            return { success: true };
+        } catch (error) {
+            console.error('Error clearing tasks:', error);
             throw error;
         }
     }

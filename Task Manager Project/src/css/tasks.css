@@ -1,6 +1,188 @@
-/* Task list styles */
-.task-list { list-style: none; padding: 0; margin: 0; }
-.task-item { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid #1f2937; }
-.task-item.completed .description { text-decoration: line-through; color: var(--color-muted); }
-.task-left { display: flex; gap: 8px; align-items: center; }
-.task-right { display: flex; gap: 8px; align-items: center; }
+/* Task List */
+#task-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 2rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Scrollbar */
+#task-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#task-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#task-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+/* Task Item */
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface);
+    margin-bottom: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    border-left: 3px solid transparent;
+    transition: all 0.3s;
+    animation: fadeIn 0.4s ease-out;
+    gap: 12px;
+}
+
+/* Priority-based task styling */
+.task-item.priority-high {
+    border-left-color: #ff7675;
+    background: linear-gradient(90deg, rgba(255, 118, 117, 0.08) 0%, var(--surface) 100%);
+}
+
+.task-item.priority-medium {
+    border-left-color: #ffeaa7;
+    background: linear-gradient(90deg, rgba(255, 234, 167, 0.08) 0%, var(--surface) 100%);
+}
+
+.task-item.priority-low {
+    border-left-color: #55efc4;
+    background: linear-gradient(90deg, rgba(85, 239, 196, 0.08) 0%, var(--surface) 100%);
+}
+
+.task-item.priority-high:hover {
+    background: linear-gradient(90deg, rgba(255, 118, 117, 0.12) 0%, var(--surface-hover) 100%);
+}
+
+.task-item.priority-medium:hover {
+    background: linear-gradient(90deg, rgba(255, 234, 167, 0.12) 0%, var(--surface-hover) 100%);
+}
+
+.task-item.priority-low:hover {
+    background: linear-gradient(90deg, rgba(85, 239, 196, 0.12) 0%, var(--surface-hover) 100%);
+}
+
+.task-item:hover {
+    background: var(--surface-hover);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.task-item:hover .priority-badge {
+    transform: scale(1.05);
+}
+
+/* Task Checkbox */
+.task-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.task-checkbox:hover {
+    border-color: var(--primary);
+}
+
+.task-checkbox:checked {
+    background: var(--success);
+    border-color: var(--success);
+}
+
+.task-checkbox:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #0f0c29;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.task-checkbox:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Task Content */
+.task-content {
+    flex: 1;
+    margin-right: 10px;
+    word-break: break-word;
+    transition: all 0.3s;
+}
+
+.task-text {
+    flex: 1;
+    word-break: break-word;
+}
+
+/* Completed Task */
+.task-item.completed .task-content,
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    opacity: 0.5;
+    color: var(--text-secondary);
+}
+
+.task-item.completed {
+    opacity: 0.7;
+}
+
+/* Task Actions */
+.task-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.task-actions .action-btn,
+.action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+}
+
+.action-btn:active {
+    transform: scale(0.9);
+}
+
+.action-btn:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.edit-btn:hover {
+    color: var(--success);
+}
+
+.delete-btn:hover {
+    color: var(--danger);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .task-item {
+        padding: 12px;
+    }
+}
