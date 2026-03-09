@@ -1,0 +1,16 @@
+task-manager/
+│
+├── index.html
+├── styles/
+│   └── main.css
+├── scripts/
+│   └── app.js
+├── php/
+│   ├── db.php
+│   ├── add_task.php
+│   ├── update_task.php
+│   └── delete_task.php
+├── assets/
+│   └── icons/
+└── db/
+    └── tasks.db (if using SQLite)

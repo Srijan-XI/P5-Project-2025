@@ -1,0 +1,10 @@
+/* Task Manager - Modular CSS Architecture */
+
+/* Import order matters! Variables must come first */
+@import 'variables.css';
+@import 'base.css';
+@import 'components.css';
+@import 'filters.css';
+@import 'tasks.css';
+@import 'modal.css';
+@import 'animations.css';

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Enrollment Manager</title>
+  <link rel="stylesheet" href="Style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <h1>Student Enrollment Manager</h1>
+      <p class="subtitle">Web Frontend with C++ Backend Integration</p>
+      
+      <div class="data-controls">
+        <div id="importExportButtons"></div>
+        <div class="stats" id="studentStats">
+          <span>Total Students: <strong id="studentCount">0</strong></span>
+          <span>|</span>
+          <span>Completed: <strong id="completedCount">0</strong></span>
+        </div>
+      </div>
+    </header>
+
+    <form id="enrollmentForm">
+      <label for="studentName">Student Name</label>
+      <input type="text" id="studentName" name="studentName" required />
+
+      <label for="dob">Date of Birth</label>
+      <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY" required />
+
+      <label for="studentID">Student ID</label>
+      <input type="text" id="studentID" name="studentID" required />
+
+      <label for="course">Course</label>
+      <input type="text" id="course" name="course" required />
+
+      <label for="enrollDate">Enrollment Date</label>
+      <input type="text" id="enrollDate" name="enrollDate" placeholder="DD/MM/YYYY" required />
+
+      <label for="address">Address</label>
+      <input type="text" id="address" name="address" required />
+
+      <label for="completed">Completed Course?</label>
+      <select id="completed" name="completed" required>
+        <option value="" disabled selected>Select option</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <button type="submit">Enroll Student</button>
+    </form>
+
+    <div class="student-list" id="studentList">
+      <!-- Student cards will appear here -->
+    </div>
+  </div>
+
+  <script src="validation-utils.js"></script>
+  <script src="api-bridge.js"></script>
+  <script src="Script.js"></script>
+</body>
+</html>

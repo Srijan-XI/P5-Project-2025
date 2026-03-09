@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="A beautiful, modern to-do list application with a premium dark theme and smooth animations">
+    <meta name="author" content="Srijan">
+    <title>TaskFlow - Premium To-Do List</title>
+
+    <!-- Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✓</text></svg>">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bin-modal.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>TaskFlow</h1>
+            <p>Organize your life, one task at a time</p>
+        </header>
+
+        <!-- Statistics Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="totalTasks">0</div>
+                <div class="stat-label">Total Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeTasks">0</div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completedTasks">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <div class="input-group">
+                <input type="text" id="taskInput" class="input-field" placeholder="What needs to be done? ✨"
+                    autofocus />
+                <select id="prioritySelect" class="select-field">
+                    <option value="low">🟢 Low</option>
+                    <option value="medium" selected>🟡 Medium</option>
+                    <option value="high">🔴 High</option>
+                </select>
+                <select id="categorySelect" class="select-field">
+                    <option value="general">📁 General</option>
+                    <option value="work">💼 Work</option>
+                    <option value="personal">👤 Personal</option>
+                    <option value="shopping">🛒 Shopping</option>
+                    <option value="health">🏥 Health</option>
+                    <option value="study">📚 Study</option>
+                </select>
+            </div>
+            <div class="button-group">
+                <button id="addTaskBtn" class="btn btn-primary">
+                    ➕ Add Task
+                </button>
+                <button id="clearCompletedBtn" class="btn btn-secondary">
+                    🗑️ Clear Completed
+                </button>
+                <button id="binBtn" class="btn btn-secondary">
+                    📦 Bin (<span id="binCount">0</span>)
+                </button>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="all">
+                📋 All Tasks
+            </button>
+            <button class="filter-btn" data-filter="active">
+                ⚡ Active
+            </button>
+            <button class="filter-btn" data-filter="completed">
+                ✅ Completed
+            </button>
+        </div>
+
+        <!-- Tasks Container -->
+        <div id="tasksContainer" class="tasks-container">
+            <!-- Tasks will be dynamically loaded here -->
+            <div class="empty-state">
+                <div class="empty-state-icon">📝</div>
+                <div class="empty-state-text">Loading tasks...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bin Modal -->
+    <div id="binModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🗑️ Recycle Bin</h2>
+                <button class="modal-close" id="closeBinModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="bin-actions">
+                    <button id="emptyBinBtn" class="btn btn-danger">
+                        🔥 Empty Bin
+                    </button>
+                </div>
+                <div id="binContainer" class="bin-container">
+                    <!-- Bin tasks will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='bin.js') }}"></script>
+</body>
+
+</html>

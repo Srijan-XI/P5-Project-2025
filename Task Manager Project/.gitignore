@@ -1,0 +1,26 @@
+# Database files
+db/*.db
+db/*.db-shm
+db/*.db-wal
+db/error.log
+
+# Backup files
+db/*.backup.*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Keep db directory structure
+!db/.gitkeep
