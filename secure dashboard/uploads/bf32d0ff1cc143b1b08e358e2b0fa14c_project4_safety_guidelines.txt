@@ -1,0 +1,33 @@
+
+SAFETY AND LEGAL CONSIDERATIONS FOR PROJECT 4
+=============================================
+
+BEFORE STARTING:
+1. Only test on systems you own or have explicit permission to test
+2. Use isolated virtual machines to prevent network interference
+3. Disable internet access on target systems
+4. Keep detailed logs of all activities
+
+LEGAL COMPLIANCE:
+- This project is for educational purposes only
+- Do not use these techniques on systems without authorization
+- Unauthorized access is illegal in most jurisdictions
+- Obtain written permission before testing any system
+
+LAB ISOLATION:
+- Use VMware/VirtualBox host-only networks
+- Disable NAT/bridged networking on target VMs
+- Take snapshots before testing for easy recovery
+- Monitor resource usage to prevent system crashes
+
+ETHICAL GUIDELINES:
+- Report vulnerabilities responsibly
+- Do not access sensitive data beyond what's necessary for testing
+- Document findings professionally
+- Use knowledge to improve security, not cause harm
+
+WINDOWS FIREWALL CONSIDERATIONS:
+- Only disable firewall in controlled lab environment
+- Re-enable firewall after testing
+- Document the security impact of disabled firewalls
+- Test with firewall enabled when possible
